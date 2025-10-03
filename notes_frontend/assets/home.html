@@ -5,79 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Notes - Home</title>
   <!--
-    Home Screen static build from Figma and style guide (Ocean Professional).
-    Design assumptions:
-    - Components mapped: Sidebar (brand/logo, nav, new note), Topbar (search + actions), Content split (list + editor)
-    - Colors from Ocean Professional: primary #2563EB, amber/success #F59E0B, error #EF4444, background #f9fafb, surface #ffffff, text #111827
-    - Subtle gradient topbar, rounded corners, smooth transitions, visible focus states
-    - Responsive: Mobile-first; collapsible sidebar on small screens; fixed on large screens
-    This page is standalone and can be opened directly without build tooling.
+    Ocean Professional themed Home Screen.
+    Layout hierarchy:
+    - Topbar (left: brand/title + sidebar toggle; center: search; right: actions)
+    - Shell with left Sidebar (nav/folders) + Main Content (Notes list + Editor)
+    Accessibility:
+    - Semantic regions, ARIA labels, proper roles, focusable interactive tiles.
+    - Visible focus states handled in CSS.
   -->
   <link rel="stylesheet" href="./home.css" />
 </head>
 <body>
-  <div class="app">
+  <div class="app" role="application" aria-label="Notes application">
     <aside class="sidebar" aria-label="Sidebar navigation">
       <div class="brand">
-        <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebarNav">☰</button>
+        <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebarNav" title="Toggle sidebar">☰</button>
         <span class="logo-dot" aria-hidden="true"></span>
-        <span class="brand-name">Notes</span>
+        <span class="brand-name" aria-label="App name">Notes</span>
       </div>
-      <nav class="nav" id="sidebarNav">
+
+      <nav class="nav" id="sidebarNav" aria-label="Primary">
         <a href="#" class="nav-item active" aria-current="page">All Notes</a>
         <a href="#" class="nav-item">Favorites</a>
         <a href="#" class="nav-item">Archived</a>
       </nav>
+
       <div class="sidebar-footer">
-        <button class="btn btn-primary new-note">+ New Note</button>
+        <button class="btn btn-primary new-note" id="newNoteBtn">
+          <span aria-hidden="true">＋</span> <span class="visually-hidden">New Note</span>
+        </button>
       </div>
     </aside>
 
-    <main class="main">
-      <header class="topbar">
-        <div class="search-wrap">
-          <span class="search-icon" aria-hidden="true">🔍</span>
-          <input id="search" class="search" type="search" placeholder="Search notes..." aria-label="Search notes" />
+    <main class="main" role="main">
+      <header class="topbar" role="banner">
+        <div class="topbar-left">
+          <h1 class="title" aria-label="Page title">Notes</h1>
         </div>
-        <div class="actions">
-          <button class="btn btn-amber" id="sortBtn" aria-haspopup="listbox" aria-expanded="false">Sort</button>
-          <button class="btn btn-outline" id="filterBtn">Filter</button>
+
+        <div class="search-wrap" role="search">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C16 6.01 13.99 4 11.5 4S7 6.01 7 9.5 9.01 15 11.5 15c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49L15.5 14Zm-4 0C9.01 14 7 11.99 7 9.5S9.01 5 11.5 5 16 7.01 16 9.5 13.99 14 11.5 14Z"/>
+          </svg>
+          <input id="search" class="search" type="search" placeholder="Search notes..." aria-label="Search notes" autocomplete="off" />
+        </div>
+
+        <div class="actions" role="group" aria-label="Topbar actions">
+          <button class="icon-btn" id="searchBtn" aria-label="Search">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C16 6.01 13.99 4 11.5 4S7 6.01 7 9.5 9.01 15 11.5 15c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49L15.5 14Zm-4 0C9.01 14 7 11.99 7 9.5S9.01 5 11.5 5 16 7.01 16 9.5 13.99 14 11.5 14Z"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="infoBtn" aria-label="Info">
+            <svg class="icon-24" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M11 7h2v2h-2V7Zm0 4h2v6h-2v-6Zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 
+              10-10S17.52 2 12 2Zm0 18c-4.41 
+              0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 
+              8-3.59 8-8 8Z"/>
+            </svg>
+          </button>
         </div>
       </header>
 
       <section class="content" aria-label="Content area">
         <div class="list-panel" aria-labelledby="listHeading">
-          <h2 id="listHeading" class="visually-hidden">Notes list</h2>
-          <ul class="notes-list" id="notesList">
-            <!-- Example list items to visualize design -->
-            <li class="note-item" tabindex="0">
+          <h2 id="listHeading" class="panel-title">Notes</h2>
+          <ul class="notes-list" id="notesList" role="listbox" aria-label="Notes list">
+            <li class="note-item selected" tabindex="0" role="option" aria-selected="true">
               <div class="note-title">Project kickoff summary</div>
               <div class="note-meta">Updated 2h ago · Work</div>
             </li>
-            <li class="note-item" tabindex="0">
+            <li class="note-item" tabindex="0" role="option" aria-selected="false">
               <div class="note-title">Grocery list</div>
               <div class="note-meta">Updated yesterday · Personal</div>
             </li>
-            <li class="note-item" tabindex="0">
+            <li class="note-item" tabindex="0" role="option" aria-selected="false">
               <div class="note-title">Ideas: Q4 Campaign</div>
               <div class="note-meta">Updated 3d ago · Marketing</div>
+            </li>
+            <li class="note-item" tabindex="0" role="option" aria-selected="false">
+              <div class="note-title">Mangas planned to read</div>
+              <div class="note-meta">Updated 5d ago · Leisure</div>
+            </li>
+            <li class="note-item" tabindex="0" role="option" aria-selected="false">
+              <div class="note-title">Awesome tweets collection</div>
+              <div class="note-meta">Updated 1w ago · Research</div>
             </li>
           </ul>
         </div>
 
         <div class="editor-panel" aria-labelledby="editorHeading">
-          <h2 id="editorHeading" class="visually-hidden">Editor</h2>
+          <h2 id="editorHeading" class="panel-title">Editor</h2>
           <input type="text" class="editor-title" placeholder="Note title" value="Project kickoff summary" aria-label="Note title" />
           <div class="editor-toolbar" role="toolbar" aria-label="Formatting">
-            <button class="tool" aria-label="Bold"><strong>B</strong></button>
-            <button class="tool" aria-label="Italic"><em>I</em></button>
-            <button class="tool" aria-label="Underline"><u>U</u></button>
+            <button class="tool" aria-label="Bold" title="Bold"><strong>B</strong></button>
+            <button class="tool" aria-label="Italic" title="Italic"><em>I</em></button>
+            <button class="tool" aria-label="Underline" title="Underline"><u>U</u></button>
           </div>
           <textarea class="editor-area" placeholder="Write your note..." aria-label="Note content">Agenda, owners, milestones...</textarea>
         </div>
       </section>
     </main>
   </div>
+
+  <button class="fab" aria-label="Add new note" id="fabAdd" title="Add new note">
+    <svg class="icon-28" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2h6Z"/>
+    </svg>
+  </button>
 
   <script src="./home.js"></script>
 </body>
