@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notes - Home</title>
+  <!--
+    Home Screen static build from Figma and style guide (Ocean Professional).
+    Design assumptions:
+    - Components mapped: Sidebar (brand/logo, nav, new note), Topbar (search + actions), Content split (list + editor)
+    - Colors from Ocean Professional: primary #2563EB, amber/success #F59E0B, error #EF4444, background #f9fafb, surface #ffffff, text #111827
+    - Subtle gradient topbar, rounded corners, smooth transitions, visible focus states
+    - Responsive: Mobile-first; collapsible sidebar on small screens; fixed on large screens
+    This page is standalone and can be opened directly without build tooling.
+  -->
+  <link rel="stylesheet" href="./home.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" aria-label="Sidebar navigation">
+      <div class="brand">
+        <button class="sidebar-toggle" aria-label="Toggle sidebar" aria-expanded="true" aria-controls="sidebarNav">☰</button>
+        <span class="logo-dot" aria-hidden="true"></span>
+        <span class="brand-name">Notes</span>
+      </div>
+      <nav class="nav" id="sidebarNav">
+        <a href="#" class="nav-item active" aria-current="page">All Notes</a>
+        <a href="#" class="nav-item">Favorites</a>
+        <a href="#" class="nav-item">Archived</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-primary new-note">+ New Note</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input id="search" class="search" type="search" placeholder="Search notes..." aria-label="Search notes" />
+        </div>
+        <div class="actions">
+          <button class="btn btn-amber" id="sortBtn" aria-haspopup="listbox" aria-expanded="false">Sort</button>
+          <button class="btn btn-outline" id="filterBtn">Filter</button>
+        </div>
+      </header>
+
+      <section class="content" aria-label="Content area">
+        <div class="list-panel" aria-labelledby="listHeading">
+          <h2 id="listHeading" class="visually-hidden">Notes list</h2>
+          <ul class="notes-list" id="notesList">
+            <!-- Example list items to visualize design -->
+            <li class="note-item" tabindex="0">
+              <div class="note-title">Project kickoff summary</div>
+              <div class="note-meta">Updated 2h ago · Work</div>
+            </li>
+            <li class="note-item" tabindex="0">
+              <div class="note-title">Grocery list</div>
+              <div class="note-meta">Updated yesterday · Personal</div>
+            </li>
+            <li class="note-item" tabindex="0">
+              <div class="note-title">Ideas: Q4 Campaign</div>
+              <div class="note-meta">Updated 3d ago · Marketing</div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="editor-panel" aria-labelledby="editorHeading">
+          <h2 id="editorHeading" class="visually-hidden">Editor</h2>
+          <input type="text" class="editor-title" placeholder="Note title" value="Project kickoff summary" aria-label="Note title" />
+          <div class="editor-toolbar" role="toolbar" aria-label="Formatting">
+            <button class="tool" aria-label="Bold"><strong>B</strong></button>
+            <button class="tool" aria-label="Italic"><em>I</em></button>
+            <button class="tool" aria-label="Underline"><u>U</u></button>
+          </div>
+          <textarea class="editor-area" placeholder="Write your note..." aria-label="Note content">Agenda, owners, milestones...</textarea>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./home.js"></script>
+</body>
+</html>
